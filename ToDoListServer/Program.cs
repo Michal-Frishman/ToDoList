@@ -196,7 +196,7 @@ using ToDoApi;
 var builder = WebApplication.CreateBuilder(args);
 
 // Get the connection string for the database
-var connectionString = builder.Configuration.GetConnectionString("tododb");
+var connectionString = builder.Configuration.GetConnectionString("ToDoDb");
 
 // Configure the DbContext with MySQL
 builder.Services.AddDbContext<ToDoDbContext>(options =>
