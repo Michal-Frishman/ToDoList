@@ -15,23 +15,25 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
 // builder.Services.AddDbContext<ToDoDbContext>(options =>
 //     options.UseMySql("name=ToDoDB", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"))
 // );
-
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("AllowAllOrigins",
-//         builder => builder.AllowAnyOrigin()
-//                           .AllowAnyMethod()
-//                           .AllowAnyHeader());
-// });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigins", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod() 
-              .AllowAnyHeader(); 
-    });
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
 });
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowSpecificOrigins", policy =>
+//     {
+//         policy.AllowAnyOrigin()
+//               .AllowAnyMethod() 
+//               .AllowAnyHeader(); 
+//     });
+// });
 builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>
