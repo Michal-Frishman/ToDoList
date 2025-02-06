@@ -5,7 +5,7 @@ using ToDoApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("ToDoDb");
+var connectionString = builder.Configuration.GetConnectionString("totodb");
 
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(connectionString, 
