@@ -196,11 +196,10 @@ using ToDoApi;
 var builder = WebApplication.CreateBuilder(args);
 
 // Get the connection string for the database
-var connectionString = builder.Configuration.GetConnectionString("ToDoDb");
 
 // Configure the DbContext with MySQL
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(connectionString, 
+    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDb"),
     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"))
 );
 

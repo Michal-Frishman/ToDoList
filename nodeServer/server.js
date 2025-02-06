@@ -17,7 +17,6 @@ app.get("/", async (req, res) => {
         Authorization: `Bearer ${API_KEY}`,
       },
     });
-
     res.json(response.data);
   } catch (error) {
     console.error("Error fetching data from Render API:", error);
