@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using ToDoApi;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,15 +16,33 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
 //     options.UseMySql("name=ToDoDB", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"))
 // );
 
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowAllOrigins",
+//         builder => builder.AllowAnyOrigin()
+//                           .AllowAnyMethod()
+//                           .AllowAnyHeader());
+// });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+    options.AddPolicy("AllowSpecificOrigins", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod() 
+              .AllowAnyHeader(); 
+    });
 });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "ToDo API",
+        Version = "v1",
+        Description = "A simple ToDo API to manage tasks."
+    });
+});
 
 var app = builder.Build();
 app.UseCors("AllowAllOrigins");
@@ -35,9 +54,14 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty; 
 });
 
-app.MapGet("/items", async (ToDoDbContext db) =>
+// app.MapGet("/items", async (ToDoDbContext db) =>
+// {
+//     return await db.Items.ToListAsync();
+// });
+app.MapGet("/tasks", async (ToDoDbContext context) =>
 {
-    return await db.Items.ToListAsync();
+    var tasks = await context.Items.ToListAsync();
+    return tasks.Any() ? Results.Ok(tasks) : Results.NoContent();
 });
 app.MapGet("/", ()=>
 {
@@ -52,14 +76,14 @@ app.MapPost("/items", async (ToDoDbContext db, Item newItem) =>
 
 app.MapPut("/items/{id}", async (ToDoDbContext db, int id) =>
 {
-  var item = await db.Items.FindAsync(id);
+        var item = await db.Items.FindAsync(id);
         if (item is null) return Results.NotFound();
+       //?????maybe
+       //    task.IsComplete = updateTask.IsComplete;
 
         item.IsComplete=!item.IsComplete;
-
-        System.Console.WriteLine(item.IsComplete);
         await db.SaveChangesAsync();
-        return Results.NoContent();
+        return Results.Ok();
 });
 
 app.MapDelete("/items/{id}", async (ToDoDbContext db, int id) =>
