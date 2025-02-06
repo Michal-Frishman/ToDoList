@@ -22,8 +22,15 @@ export default {
     await axios.post('/items', { name: name, isComplete: false });
 
   },
-  setCompleted: async (id, isComplete,name) => {
-    await axios.put(`/items/${id}`, {name:name,isComplete: isComplete });
+  setCompleted: async (id, isComplete) => {
+    try {
+      console.log('setCompleted', { id, isComplete });
+      const result = await axios.put(`/items/${id}`, { isComplete });
+      return result.data;
+    } catch (error) {
+      console.error('Failed to update task:', error);
+      throw error;
+    }
   },
 
   deleteTask: async (id) => {
