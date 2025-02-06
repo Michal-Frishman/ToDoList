@@ -60,10 +60,10 @@ app.UseSwaggerUI(c =>
 // {
 //     return await db.Items.ToListAsync();
 // });
-app.MapGet("/tasks", async (ToDoDbContext context) =>
+app.MapGet("/items", async (ToDoDbContext context) =>
 {
-    var tasks = await context.Items.ToListAsync();
-    return tasks.Any() ? Results.Ok(tasks) : Results.NoContent();
+    var items = await context.Items.ToListAsync();
+    return items.Any() ? Results.Ok(items) : Results.NoContent();
 });
 app.MapGet("/", ()=>
 {
