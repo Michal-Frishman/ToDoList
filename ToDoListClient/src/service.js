@@ -16,7 +16,7 @@ axios.interceptors.response.use(
 
 export default {
   getTasks: async () => {
-    const result = await axios.get('/tasks');
+    const result = await axios.get('/items');
     if (Array.isArray(result.data))
     return result.data
     else {
