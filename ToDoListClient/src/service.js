@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const apiUrl = process.env.REACT_APP_API_URL;
+console.log('API URL:', apiUrl); 
 
-console.log('Using API URL:', apiUrl);
 axios.defaults.baseURL = apiUrl;
 
 
@@ -24,11 +24,13 @@ export default {
     }
   },
 
-  addTask: async (name) => {
-    console.log('addTask', name);
-    await axios.post('/items', { name: name, isComplete: false });
 
-  },
+addTask: async (name) => {
+  console.log('addTask', name);
+  const response = await axios.post('/items', { name, isComplete: false });
+  return response.data; 
+},
+
   setCompleted: async (id, isComplete) => {
     try {
       console.log('setCompleted', { id, isComplete });

@@ -189,9 +189,9 @@
 
 // // Run the application
 // app.Run();
+using ToDoApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using ToDoApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
